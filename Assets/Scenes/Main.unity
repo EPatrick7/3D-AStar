@@ -223,6 +223,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+      propertyPath: fm.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+      propertyPath: fm.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+      propertyPath: tg.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+      propertyPath: tg.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903434883917230445, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+      propertyPath: WorldSize
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3903434883917230445, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+      propertyPath: Tiles.Array.data[0]
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5476402915565240633, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
       propertyPath: m_Name
       value: World

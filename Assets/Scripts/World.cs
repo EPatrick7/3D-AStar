@@ -15,39 +15,88 @@ public class World
         WorldHeight = height;
 
         Grid = new Tile[WorldHeight][][];
-        for (int y = 0; y< Grid.Length; y++)
+        for (int z = 0; z< Grid.Length; z++)
         {
-            Grid[y]= new Tile[WorldSize][];
-            for (int x = 0; x < Grid[y].Length; x++)
+            Grid[z]= new Tile[WorldSize][];
+            for (int x = 0; x < Grid[z].Length; x++)
             {
-                Grid[y][x]= new Tile[WorldSize];
+                Grid[z][x]= new Tile[WorldSize];
 
 
-                for (int z = 0; z < Grid[y][x].Length; z++)
+                for (int y = 0; y < Grid[z][x].Length; y++)
                 {
-                    Grid[y][x][z] = new Tile();
+                    Grid[z][x][y] = new Tile(new Vector3Int(x,y,z),1);
                 }
             }
         }
     }
-    public Tile getTile(int x,int y, int z)
+    public Tile getTile(Vector3Int pos)
     {
-        return Grid[y][x][z]; //y is the vertical slice, x and z are the grid coordinates.
+        if(!isPos(pos))
+        {
+            Debug.LogError("Position "+pos+" is out of bounds!");
+        }
+        return Grid[pos.z][pos.x][pos.y]; //z is the vertical slice, x and y are the grid coordinates.
+    }
+    public bool isPos(Vector3Int pos)
+    {
+        return pos.x >= 0 && pos.y >= 0 && pos.z >= 0 && pos.x < WorldSize && pos.y < WorldSize && pos.z < WorldHeight;
     }
     [System.Serializable]
     public class Tile
     {
-        public Tile(int id)
+        public Tile(Vector3Int location, int id)
         {
             tileId = id;
             pathCost = 1;
+            this.location = location;
         }
-        public Tile() //Empty Tile = 0
+        public Tile(Vector3Int location) //Empty Tile = 0
         {
             tileId = 0;
-            pathCost = 1;
+            pathCost = -1;
+            this.location = location;
         }
+        public Vector3Int location;
         public int tileId=0;
         public int pathCost=1;
+
+        
+        //Pathfinding Data:
+        public Vector2Int pathTemp;
+        public Vector3Int pathPointer;
+
+
+        public void UpdateCosts(Tile neighbor,Tile target,bool forced)
+        {
+            int g_distance = neighbor.GCost()+ Mathf.RoundToInt(Vector3Int.Distance(location, neighbor.location)*10);
+            int h_distance = Mathf.RoundToInt(Vector3Int.Distance(location, target.location) * 10);
+            if (forced||(HCost()>(g_distance+h_distance)))
+            {
+                pathPointer = neighbor.location;
+                SetGCost(g_distance);
+                SetHCost(h_distance);
+            }
+        }
+        private void SetGCost(int cost)
+        {
+            pathTemp.x = cost;
+        }
+        private void SetHCost(int cost)
+        {
+            pathTemp.y = cost;
+        }
+        public int GCost()
+        {
+            return pathTemp.x;
+        }
+        public int FCost()
+        {
+            return pathTemp.y;
+        }
+        public int HCost()
+        {
+            return pathTemp.x+ pathTemp.y;
+        }
     }
 }
