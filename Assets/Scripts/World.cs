@@ -69,14 +69,28 @@ public class World
 
         public void UpdateCosts(Tile neighbor,Tile target,bool forced)
         {
-            int g_distance = neighbor.GCost()+ Mathf.RoundToInt(Vector3Int.Distance(location, neighbor.location)*10);
-            int h_distance = Mathf.RoundToInt(Vector3Int.Distance(location, target.location) * 10);
+            int g_distance = pathCost+ neighbor.GCost()+ Mathf.RoundToInt(Vector3.Distance(location, neighbor.location)*10);
+            int h_distance = Mathf.RoundToInt(Vector3.Distance(location, target.location) * 10)+(1000*Mathf.Abs(location.z-target.location.z));
             if (forced||(HCost()>(g_distance+h_distance)))
             {
                 pathPointer = neighbor.location;
                 SetGCost(g_distance);
                 SetHCost(h_distance);
             }
+        }
+        public bool CanGoUp()
+        {
+            if (tileId == 2)
+                return true;
+
+            return false;
+        }
+        public bool CanGoDown()
+        {
+            if (tileId == 3)
+                return true;
+
+            return false;
         }
         private void SetGCost(int cost)
         {

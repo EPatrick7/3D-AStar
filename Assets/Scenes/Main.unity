@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 519420032}
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
+  - component: {fileID: 519420033}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -184,7 +185,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -209,12 +210,26 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.5, y: 4.5, z: -10}
+  m_LocalPosition: {x: 18, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &519420033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1714455423bb43440bc771dd780a29c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  worldManager: {fileID: 372154698259471548}
+  YLevel: 0
 --- !u!1001 &372154698259471544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -223,30 +238,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
-      propertyPath: fm.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
-      propertyPath: fm.y
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
-      propertyPath: tg.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 240160588683867909, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
-      propertyPath: tg.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3903434883917230445, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
-      propertyPath: WorldSize
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3903434883917230445, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
-      propertyPath: Tiles.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 5476402915565240633, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
       propertyPath: m_Name
       value: World
@@ -296,6 +287,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+--- !u!114 &372154698259471548 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3903434883917230445, guid: 699ab9add1f7cdb428bdec844d097618, type: 3}
+  m_PrefabInstance: {fileID: 372154698259471544}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d8091e801687f24fbd3c9a8d6f88df2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

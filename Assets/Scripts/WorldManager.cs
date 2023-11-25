@@ -17,20 +17,15 @@ public class WorldManager : MonoBehaviour
         GenerateWorld();
         RenderWorld();
     }
-    private void Update()
+    private void OnDrawGizmosSelected()
     {
-        if(Input.GetMouseButton(0))
+        for(int i=0;i<Slices.Length;i++)
         {
-            Vector3Int mPos= Vector3Int.RoundToInt(Camera.main.ScreenToWorldPoint(Input.mousePosition)- new Vector3(0.15f,0.15f,0f));
-            mPos.z = 0;
-            if(world.isPos(mPos))
-            {
-                world.getTile(mPos).tileId=0;
-                world.getTile(mPos).pathCost=-1;
-                RenderTile(mPos);
-            }
+            Slices[i].gameObject.name = "Slice y=" + i;
+            Slices[i].GetComponent<TilemapRenderer>().sortingOrder = i*2;
         }
     }
+
     public void GenerateWorld()
     {
         world = new World(Slices.Length, WorldSize);
@@ -43,6 +38,7 @@ public class WorldManager : MonoBehaviour
     {
         for(int z=0;z<Slices.Length;z++)
         {
+            Slices[z].ClearAllTiles();
             for(int x=0;x<WorldSize;x++)
             {
                 for (int y = 0; y < WorldSize; y++)

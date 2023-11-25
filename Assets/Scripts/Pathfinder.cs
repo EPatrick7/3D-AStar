@@ -11,28 +11,21 @@ public class Pathfinder : MonoBehaviour
     {
         worldManager=GetComponent<WorldManager>();
     }
-    public Vector3Int tg;
-    public Vector3Int fm;
+    public GameObject StartLoc;
+    public GameObject StopLoc;
+    public int WaitForOffset = 5000;
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space)) {
-            StartCoroutine(CalcPath(fm, tg));
+            worldManager.RenderWorld();
+            StartCoroutine(CalcPath(Vector3Int.RoundToInt(StartLoc.transform.position), Vector3Int.RoundToInt(StopLoc.transform.position)));
         }
     }
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(tg+ new Vector3(0.5f,0.5f,0f), 0.5f);
-
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(fm+ new Vector3(0.5f, 0.5f, 0f), 0.5f);
-    }
-
 
     public List<Vector3Int> path;
     public IEnumerator CalcPath(Vector3Int from, Vector3Int to)
     {
-        Debug.Log("Working..");
+       // Debug.Log("Working..");
         path =new List<Vector3Int>();
         
         if(from==to)
@@ -53,6 +46,7 @@ public class Pathfinder : MonoBehaviour
         World.Tile start=worldManager.world.getTile(from);
         World.Tile tile =start;
         World.Tile target = worldManager.world.getTile(to);
+        int waitForOffset = 1;
 
         live.Add(tile);
 
@@ -66,6 +60,11 @@ public class Pathfinder : MonoBehaviour
                 {
                     cheapest = option;
                 }
+
+
+                if (waitForOffset % WaitForOffset == 0)
+                    yield return new WaitForEndOfFrame();
+                waitForOffset++;
             }
             tile = cheapest;
 
@@ -75,8 +74,10 @@ public class Pathfinder : MonoBehaviour
             cleared.Add(tile);
             worldManager.DebugSetColor(tile.location, Color.red);
 
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForSeconds(0.1f);
+            if(waitForOffset% WaitForOffset == 0)
+                yield return new WaitForEndOfFrame();
+            waitForOffset++;
+         //   yield return new WaitForSeconds(0.1f);
 
             if (live.Count==0)
             {
@@ -84,20 +85,22 @@ public class Pathfinder : MonoBehaviour
                 yield break;
             }
         }
-        Debug.Log("Backtracking...");
+     //   Debug.Log("Backtracking...");
         tile=target;
         while(tile!=start)
         {
             worldManager.DebugSetColor(tile.location, Color.blue);
             path.Add(tile.location);
             tile = worldManager.world.getTile(tile.pathPointer);
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForSeconds(0.1f);
+            if (waitForOffset % WaitForOffset == 0)
+                yield return new WaitForEndOfFrame();
+            waitForOffset++;
+            //   yield return new WaitForSeconds(0.1f);
         }
 
         worldManager.DebugSetColor(tile.location, Color.blue);
         path.Reverse();
-        Debug.Log("Made it!");
+     //   Debug.Log("Made it!");
 
     }
     public void FetchNeighbors(World.Tile tile, World.Tile target, List<World.Tile> live,List<World.Tile> cleared)
@@ -145,7 +148,23 @@ public class Pathfinder : MonoBehaviour
         {
             AddNeighbor(tile, worldManager.world.getTile(loc), target, live, cleared);
         }
+        if(tile.CanGoUp())
+        {
+            loc = tile.location + new Vector3Int(0, 0, 1);
+            if (worldManager.world.isPos(loc))
+            {
+                AddNeighbor(tile, worldManager.world.getTile(loc), target, live, cleared);
+            }
+        }
 
+        if (tile.CanGoDown())
+        {
+            loc = tile.location + new Vector3Int(0, 0, -1);
+            if (worldManager.world.isPos(loc))
+            {
+                AddNeighbor(tile, worldManager.world.getTile(loc), target, live, cleared);
+            }
+        }
 
     }
     public void AddNeighbor(World.Tile tile, World.Tile tile_new,World.Tile target, List<World.Tile> live,List<World.Tile> cleared)
